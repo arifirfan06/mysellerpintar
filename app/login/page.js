@@ -85,7 +85,7 @@ export default function Login() {
           Login
         </button>
         <div className="mt-4 text-center">
-          <span>Don't have an account? </span>
+          <span>Dont have an account? </span>
           <a href="/register" className="text-blue-500 hover:text-blue-800">
             Register here
           </a>
