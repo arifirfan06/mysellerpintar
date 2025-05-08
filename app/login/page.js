@@ -35,7 +35,8 @@ export default function Login() {
       })
         .then((response) => response.json())
         .then((profileData) => {
-          setUser(profileData); // Save profile data to context
+          setUser(profileData);
+          localStorage.setItem('user', JSON.stringify(profileData));
         })
       router.push('/'); // Navigate after login
     } else {

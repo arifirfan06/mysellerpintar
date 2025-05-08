@@ -8,37 +8,29 @@ import { useUser } from '@/store/UserContext';
 import axios from 'axios';
 
 const Header = () => {
-    const { user, setUser } = useUser();
+  const { user, setUser } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
-  const isLoggedIn = token !== null;
-
-//   useEffect(() => {
-//     if (token) {
-//       axios
-//         .get('https://test-fe.mysellerpintar.com/api/auth/profile', {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         })
-//         .then((response) => {
-//           console.log('Profile data:', response.data);
-//           setUser(response.data); // Save profile data to context
-//         })
-//         .catch((error) => {
-//           console.error('Error fetching profile:', error);
-//           // localStorage.removeItem('user'); // Optional: Clear invalid token
-//         });
-//     }
-//   }, [token, setUser]);
+  // Restore user from localStorage on first load
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (e) {
+        console.error('Failed to parse user from localStorage', e);
+      }
+    }
+  }, [setUser]);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     window.location.reload();
   };
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -48,6 +40,8 @@ const Header = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const isLoggedIn = Boolean(user);
 
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center p-3 bg-gray-100 border-b border-gray-300">

@@ -1,27 +1,40 @@
-"use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import Link from "next/link";
+'use client';
+
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
+    // Fetch articles
     const fetchArticles = async () => {
       try {
-        const response = await fetch(
-          "https://test-fe.mysellerpintar.com/api/articles"
-        );
+        const response = await fetch('https://test-fe.mysellerpintar.com/api/articles');
         const data = await response.json();
         setArticles(data.data);
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error('Error fetching articles:', error);
       }
     };
-    
+
+    // Fetch categories
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://test-fe.mysellerpintar.com/api/categories');
+        const data = await response.json();
+        setCategories(data.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
 
     fetchArticles();
+    fetchCategories();
   }, []);
 
   return (
@@ -31,7 +44,7 @@ export default function Home() {
           src="/main-bg.jpg"
           alt="main-bg"
           fill
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: 'cover' }}
           quality={100}
           priority
         />
@@ -48,11 +61,17 @@ export default function Home() {
           {/* Dropdown and Search */}
           <div className="flex mt-10 gap-4 w-full max-w-2xl">
             {/* Dropdown */}
-            <select className="p-3 rounded-lg text-black w-1/3 bg-white">
+            <select
+              className="p-3 rounded-lg text-black w-1/3 bg-white"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
               <option value="">Select categories</option>
-              <option value="design">Design</option>
-              <option value="interviews">Interviews</option>
-              <option value="news">Industry News</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
 
             {/* Search Input */}
@@ -74,10 +93,7 @@ export default function Home() {
         <div className="grid gap-6 mt-6 md:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
             <Link key={article.id} href={`/articles/${article.id}`}>
-              <div
-                
-                className="bg-white shadow-lg rounded-2xl overflow-hidden transition hover:shadow-xl"
-              >
+              <div className="bg-white shadow-lg rounded-2xl overflow-hidden transition hover:shadow-xl">
                 {/* Image */}
                 <div className="w-full h-48 relative">
                   <img
@@ -100,7 +116,7 @@ export default function Home() {
                       {article.title}
                     </h2>
 
-                    {/* Content preview (render as plain text) */}
+                    {/* Content preview */}
                     <p
                       className="text-gray-600 text-sm line-clamp-3"
                       dangerouslySetInnerHTML={{ __html: article.content }}
@@ -111,10 +127,10 @@ export default function Home() {
                   <div className="mt-4 text-sm text-gray-500 flex justify-between items-center">
                     <span>By {article.user.username}</span>
                     <span>
-                      {new Date(article.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
+                      {new Date(article.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
                       })}
                     </span>
                   </div>
