@@ -11,7 +11,6 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Fetch articles
     const fetchArticles = async () => {
       try {
         const response = await fetch('https://test-fe.mysellerpintar.com/api/articles');
@@ -22,7 +21,7 @@ export default function Home() {
       }
     };
 
-    // Fetch categories
+    
     const fetchCategories = async () => {
       try {
         const response = await fetch('https://test-fe.mysellerpintar.com/api/categories');
@@ -58,9 +57,7 @@ export default function Home() {
             Your daily dose of design insights!
           </span>
 
-          {/* Dropdown and Search */}
           <div className="flex mt-10 gap-4 w-full max-w-2xl">
-            {/* Dropdown */}
             <select
               className="p-3 rounded-lg text-black w-1/3 bg-white"
               value={selectedCategory}
@@ -74,7 +71,6 @@ export default function Home() {
               ))}
             </select>
 
-            {/* Search Input */}
             <div className="relative w-2/3 bg-white rounded-lg">
               <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
               <input
@@ -94,7 +90,6 @@ export default function Home() {
           {articles.map((article) => (
             <Link key={article.id} href={`/articles/${article.id}`}>
               <div className="bg-white shadow-lg rounded-2xl overflow-hidden transition hover:shadow-xl">
-                {/* Image */}
                 <div className="w-full h-48 relative">
                   <img
                     src={article.imageUrl}
@@ -103,27 +98,27 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Content */}
+                
                 <div className="p-5 flex flex-col justify-between h-full">
                   <div>
-                    {/* Category */}
+                    
                     <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold rounded-full px-3 py-1 mb-2">
                       {article.category.name}
                     </span>
 
-                    {/* Title */}
+                    
                     <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                       {article.title}
                     </h2>
 
-                    {/* Content preview */}
+                    
                     <p
                       className="text-gray-600 text-sm line-clamp-3"
                       dangerouslySetInnerHTML={{ __html: article.content }}
                     />
                   </div>
 
-                  {/* Meta */}
+                  
                   <div className="mt-4 text-sm text-gray-500 flex justify-between items-center">
                     <span>By {article.user.username}</span>
                     <span>

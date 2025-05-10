@@ -25,7 +25,6 @@ export default function Login() {
 
     if (res.ok) {
       const data = await res.json();
-      // console.log('Login successful:', data);
       localStorage.setItem('user', JSON.stringify(data.token));
       fetch('https://test-fe.mysellerpintar.com/api/auth/profile', {
         method: 'GET',
@@ -38,7 +37,7 @@ export default function Login() {
           setUser(profileData);
           localStorage.setItem('user', JSON.stringify(profileData));
         })
-      router.push('/'); // Navigate after login
+      router.push('/'); 
     } else {
       alert('Login failed');
     }

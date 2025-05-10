@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // default role
+  const [role, setRole] = useState("user"); 
     const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,6 @@ export default function Register() {
       router.push("/login"); 
       console.log("Response:", result);
 
-      // Optionally reset form
       setUsername("");
       setPassword("");
       setRole("user");
